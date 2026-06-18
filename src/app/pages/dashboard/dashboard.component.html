@@ -1,0 +1,38 @@
+<div class="dashboard-container">
+  
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <h2>TAP <span>Terminal</span></h2>
+    </div>
+    
+    <nav class="sidebar-menu">
+      <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="menu-item">
+        <span class="icon">👥</span> Usuarios
+      </a>
+      <a routerLink="/dashboard/productos" routerLinkActive="active" class="menu-item">
+        <span class="icon">📦</span> Productos
+      </a>
+      <a routerLink="/dashboard/perfiles" routerLinkActive="active" class="menu-item">
+        <span class="icon">🛡️</span> Perfiles
+      </a>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    
+    <header class="navbar">
+      <div class="user-info">
+        <span class="status-indicator"></span>
+        <p>Supervisor Activo</p>
+      </div>
+      <button class="logout-btn" (click)="onLogout()">
+        Cerrar Sesión 🚪
+      </button>
+    </header>
+
+    <main class="content-body">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

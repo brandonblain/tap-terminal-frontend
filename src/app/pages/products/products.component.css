@@ -1,0 +1,489 @@
+/* ==========================================================================
+   📌 CONTENEDOR GENERAL Y CONTROLES DE FLUJO
+   ========================================================================== */
+.module-container {
+  padding: 24px;
+  background-color: #ffffff;
+  min-height: 100vh;
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.module-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666666;
+  margin: 0;
+}
+
+/* ==========================================================================
+   🔍 BARRA DE HERRAMIENTAS (FILTROS Y EXPORTACIÓN)
+   ========================================================================== */
+.toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.search-box {
+  position: relative;
+  width: 320px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888888;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #111111;
+}
+
+/* ==========================================================================
+   📊 BOTONES DE ACCIÓN
+   ========================================================================== */
+.btn-primary {
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #333333;
+}
+
+.btn-pdf {
+  background-color: #fff0f1;
+  color: #c92a2a;
+  border: 1px solid #ffc9c9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-pdf:hover {
+  background-color: #ffe3e3;
+}
+
+.btn-excel {
+  background-color: #ebfbee;
+  color: #2b8a3e;
+  border: 1px solid #b2f2bb;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-excel:hover {
+  background-color: #d3f9d8;
+}
+
+.btn-cancel {
+  background-color: #e9ecef;
+  color: #495057;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #dee2e6;
+}
+
+.btn-save {
+  background-color: #111111;
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-save:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   📋 TABLA PERSONALIZADA
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.custom-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+  padding: 14px 16px;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.custom-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eeeeee;
+  color: #333333;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #fdfdfd;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  }
+
+  /* ==========================================================================
+   📌 CONTENEDOR PRINCIPAL (LAYOUT GENERAL)
+   ========================================================================== */
+.module-container {
+  padding: 32px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Encabezado del Módulo */
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  border-bottom: 1px solid #f3f4f6;
+  padding-bottom: 20px;
+}
+
+.module-header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* ==========================================================================
+   🔍 BARRA DE HERRAMIENTAS (ALINEACIÓN PERFECTA DE BOTONES Y BUSCADOR)
+   ========================================================================== */
+.toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Caja de búsqueda con altura homologada */
+.search-box {
+  position: relative;
+  width: 340px;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: #9ca3af;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  height: 42px; /* Altura idéntica a los botones */
+  padding: 10px 16px 10px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #1f2937;
+  background-color: #ffffff;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.search-input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+  outline: none;
+}
+
+/* ==========================================================================
+   ⚡ ESTILIZADO DE BOTONES (PDF, EXCEL Y ALTA)
+   ========================================================================== */
+.btn-primary {
+  background-color: #111827;
+  color: #ffffff;
+  border: none;
+  height: 42px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary:hover {
+  background-color: #1f2937;
+}
+
+.btn-pdf {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.btn-pdf:hover {
+  background-color: #fee2e2;
+  border-color: #ef4444;
+}
+
+.btn-excel {
+  background-color: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #86efac;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.btn-excel:hover {
+  background-color: #dcfce7;
+  border-color: #22c55e;
+}
+
+/* ==========================================================================
+   📋 LA TABLA RE DISEÑADA (ESTILO EMPRESARIAL)
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+  background-color: #ffffff;
+}
+
+.custom-table th {
+  background-color: #f9fafb;
+  color: #4b5563;
+  padding: 16px 20px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  letter-spacing: 0.03em;
+}
+
+.custom-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  vertical-align: middle;
+}
+
+.custom-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Tipografías y Badges dentro de la Tabla */
+.font-bold {
+  font-weight: 600;
+  color: #111827;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
+  border: 1px solid #e5e7eb;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* ==========================================================================
+   🛠️ CORRECCIÓN TOTAL DE BOTONES DE ACCIÓN (LÍNEAS MODERNAS)
+   ========================================================================== */
+.actions-cell {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.action-btn {
+  background-color: #f3f4f6 !important; /* Quita el gris opaco del navegador */
+  border: 1px solid #e5e7eb !important;
+  font-size: 14px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+/* Efectos Hover personalizados por acción */
+.view-btn:hover {
+  background-color: #eff6ff !important;
+  border-color: #bfdbfe !important;
+  transform: translateY(-1px);
+}
+
+.edit-btn:hover {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+  transform: translateY(-1px);
+}
+
+.delete-btn:hover {
+  background-color: #fef2f2 !important;
+  border-color: #fca5a5 !important;
+  transform: translateY(-1px);
+}
+
+.empty-state {
+  padding: 48px !important;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* ==========================================================================
+   🔄 LOADING OVERLAY (PANTALLA DE CARGA BLOQUEANTE)
+   ========================================================================== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #111827;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

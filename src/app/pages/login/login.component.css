@@ -1,0 +1,151 @@
+/* ==========================================================================
+   🎯 CONTENEDOR PRINCIPAL (CENTRADO ABSOLUTO)
+   ========================================================================== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f4f6f9; /* Fondo gris claro ultra limpio */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 1.5rem;
+}
+
+/* ==========================================================================
+   📦 TARJETA DE LOGIN (ESTILO GRUPO TAP)
+   ========================================================================== */
+.login-card {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra suave y moderna */
+  width: 100%;
+  max-width: 400px;
+  border-top: 6px solid #000000; /* Detalle elegante con el negro de la marca */
+  transition: transform 0.3s ease;
+}
+
+.login-card h2 {
+  margin: 0 0 0.4rem 0;
+  color: #1a1a1a;
+  font-size: 1.65rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #6c757d;
+  text-align: center;
+  margin-bottom: 2.2rem;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   🛠️ CAMPOS DEL FORMULARIO (INPUTS)
+   ========================================================================== */
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #495057;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid #ced4da;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #212529;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+}
+
+/* Enfoque del input: Destello con el amarillo corporativo */
+.form-group input:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(245, 213, 71, 0.35); 
+}
+
+/* Estilo cuando el campo tiene un error de validación */
+.form-group input.error-input {
+  border-color: #dc3545;
+  background-color: #fdf2f2;
+}
+
+.form-group input.error-input:focus {
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 0.78rem;
+  margin-top: 0.4rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   🚨 ALERTAS DE ERROR DEL SERVIDOR (RENDER)
+   ========================================================================== */
+.alert-error {
+  background-color: #f8d7da;
+  color: #842029;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #dc3545;
+  font-weight: 500;
+  animation: shake 0.2s ease-in-out;
+}
+
+/* ==========================================================================
+   🚀 BOTÓN DE ACCIÓN PRINCIPAL (AMARILLO TAP)
+   ========================================================================== */
+button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #f5d547; /* El amarillo vibrante del logo de Grupo TAP */
+  color: #000000;            /* Texto negro sólido para un contraste perfecto */
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.5rem;
+}
+
+button:hover:not(:disabled) {
+  background-color: #e2c134; /* Oscurece un poco al pasar el mouse */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 213, 71, 0.2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled {
+  background-color: #e9ecef;
+  color: #adb5bd;
+  cursor: not-allowed;
+}
+
+/* Animación sutil de rebote para cuando salte un error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}

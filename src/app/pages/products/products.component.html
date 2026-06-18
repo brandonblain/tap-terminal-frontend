@@ -1,0 +1,145 @@
+<div class="module-container">
+  
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Sincronizando inventario con Render NoSQL...</p>
+  </div>
+
+  <div class="module-header">
+    <div>
+      <h1>Catálogo de Productos</h1>
+      <p class="subtitle">Inventario y refacciones autorizadas de la Terminal TAP</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="openAddModal()">+ Alta de Producto</button>
+  </div>
+
+  <div class="toolbar-container">
+    <div class="toolbar-actions">
+      <button type="button" class="btn-pdf" (click)="downloadPDF()">📄 Exportar PDF</button>
+      <button type="button" class="btn-excel" (click)="downloadExcel()">📊 Exportar Excel</button>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" placeholder="Buscar por código, nombre o marca..." [(ngModel)]="searchTerm" />
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre del Producto</th>
+          <th>Marca</th>
+          <th>Precio Unitario</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredProducts">
+          <td class="font-bold">{{ item.code }}</td>
+          <td>{{ item.name }}</td>
+          <td><span class="badge" style="background:#e9ecef; color:#495057;">{{ item.brand }}</span></td>
+          <td class="font-bold" style="color: #2b9348;">{{ item.price | currency:'USD':'symbol':'1.2-2' }}</td>
+          <td class="text-center actions-cell">
+            <button type="button" class="action-btn view-btn" title="Ver Ficha Técnica" (click)="verDetalle(item)">👁️</button>
+            <button type="button" class="action-btn edit-btn" title="Editar Insumo" (click)="openEditModal(item)">✏️</button>
+            <button type="button" class="action-btn delete-btn" title="Desincorporar" (click)="openDeleteModal(item)">🗑️</button>
+          </td>
+        </tr>
+        <tr *ngIf="showEmptyState">
+          <td colspan="5" class="text-center empty-state">⚠️ No se encontraron productos en el catálogo.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDetailModal" (click)="closeModales()"
+     style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(0, 0, 0, 0.5) !important; display: flex !important; justify-content: center !important; align-items: center !important; z-index: 999999 !important; font-family: 'Segoe UI', Roboto, sans-serif;">
+  
+  <div (click)="$event.stopPropagation()"
+       style="background: #ffffff !important; border-radius: 16px !important; width: 460px !important; max-width: 92% !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important; overflow: hidden !important; border: 1px solid #e5e7eb !important;">
+    
+    <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 18px 24px !important; background-color: #f9fafb !important; border-bottom: 1px solid #f3f4f6 !important;">
+      <h2 style="margin: 0 !important; font-size: 18px !important; font-weight: 700 !important; color: #111827 !important; letter-spacing: -0.025em;">Ficha Técnica del Insumo</h2>
+      <button type="button" (click)="closeModales()"
+              style="background: none !important; border: none !important; font-size: 22px !important; cursor: pointer !important; color: #9ca3af !important; padding: 4px !important; line-height: 1 !important; transition: color 0.2s;"
+              onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#9ca3af'">&times;</button>
+    </div>
+    
+    <div style="padding: 24px !important;">
+      <h3 style="margin: 0 0 8px 0 !important; font-size: 20px !important; font-weight: 700 !important; color: #111827 !important;">{{ selectedProduct?.name }}</h3>
+      
+      <span style="display: inline-block !important; background-color: #1f2937 !important; color: #ffffff !important; padding: 5px 14px !important; border-radius: 6px !important; font-size: 12px !important; font-weight: 600 !important; letter-spacing: 0.05em !important; margin-bottom: 20px !important;">
+        {{ selectedProduct?.code }}
+      </span>
+      
+      <div style="border-top: 1px solid #f3f4f6 !important; padding-top: 18px !important; display: flex !important; flex-direction: column !important; gap: 12px !important; font-size: 14px !important; color: #4b5563 !important;">
+        <p style="margin: 0 !important; display: flex; justify-content: space-between;"><strong style="color: #111827 !important;">Marca de Fábrica:</strong> <span>{{ selectedProduct?.brand }}</span></p>
+        <p style="margin: 0 !important; display: flex; justify-content: space-between; align-items: center;"><strong style="color: #111827 !important;">Precio Base Terminal:</strong> <span style="color: #16a34a !important; font-weight: 700 !important; font-size: 16px !important;">{{ selectedProduct?.price | currency:'USD' }}</span></p>
+        <p style="margin: 0 !important; display: flex; justify-content: space-between;"><strong style="color: #111827 !important;">Fecha Registro NoSQL:</strong> <span style="font-variant-numeric: tabular-nums;">{{ selectedProduct?.created_at }}</span></p>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<div *ngIf="showAddModal" (click)="closeModales()"
+     style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(0, 0, 0, 0.5) !important; display: flex !important; justify-content: center !important; align-items: center !important; z-index: 999999 !important; font-family: 'Segoe UI', Roboto, sans-serif;">
+  
+  <div (click)="$event.stopPropagation()"
+       style="background: #ffffff !important; border-radius: 16px !important; width: 480px !important; max-width: 92% !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important; overflow: hidden !important; border: 1px solid #e5e7eb !important;">
+    
+    <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 18px 24px !important; background-color: #f9fafb !important; border-bottom: 1px solid #f3f4f6 !important;">
+      <h2 style="margin: 0 !important; font-size: 18px !important; font-weight: 700 !important; color: #111827 !important;">{{ isEditMode ? 'Modificar Ficha Técnica' : 'Registrar Insumo TAP' }}</h2>
+      <button type="button" (click)="closeModales()" style="background: none !important; border: none !important; font-size: 22px !important; cursor: pointer !important; color: #9ca3af !important;">&times;</button>
+    </div>
+    
+    <form [formGroup]="productForm" (ngSubmit)="onFormSubmit()" style="padding: 24px !important; margin: 0 !important;">
+      <div style="margin-bottom: 16px !important;">
+        <label style="display: block !important; margin-bottom: 6px !important; font-size: 14px !important; font-weight: 600 !important; color: #374151 !important;">Nombre del Producto *</label>
+        <input type="text" formControlName="name" style="width: 100% !important; padding: 10px 12px !important; border: 1px solid #d1d5db !important; border-radius: 8px !important; font-size: 14px !important; box-sizing: border-box !important;" placeholder="Ej. Filtro de Aceite Heavy Duty">
+      </div>
+      
+      <div style="margin-bottom: 16px !important;">
+        <label style="display: block !important; margin-bottom: 6px !important; font-size: 14px !important; font-weight: 600 !important; color: #374151 !important;">Marca Fabricante *</label>
+        <input type="text" formControlName="brand" style="width: 100% !important; padding: 10px 12px !important; border: 1px solid #d1d5db !important; border-radius: 8px !important; font-size: 14px !important; box-sizing: border-box !important;" placeholder="Ej. Mobil / Gonher">
+      </div>
+      
+      <div style="margin-bottom: 24px !important;">
+        <label style="display: block !important; margin-bottom: 6px !important; font-size: 14px !important; font-weight: 600 !important; color: #374151 !important;">Precio de Venta ($) *</label>
+        <input type="number" step="0.01" formControlName="price" style="width: 100% !important; padding: 10px 12px !important; border: 1px solid #d1d5db !important; border-radius: 8px !important; font-size: 14px !important; box-sizing: border-box !important;" placeholder="0.00">
+      </div>
+      
+      <div style="display: flex !important; justify-content: flex-end !important; gap: 12px !important; border-top: 1px solid #f3f4f6 !important; padding-top: 16px !important;">
+        <button type="button" class="btn-cancel" (click)="closeModales()" style="padding: 10px 16px !important; font-size: 14px !important; border-radius: 8px !important;">Cancelar</button>
+        <button type="submit" class="btn-save" [disabled]="productForm.invalid" style="padding: 10px 20px !important; font-size: 14px !important; border-radius: 8px !important; background-color: #111827 !important; color: white !important; border: none !important; cursor: pointer !important;">Guardar Producto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="showDeleteModal" (click)="closeModales()"
+     style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background-color: rgba(0, 0, 0, 0.5) !important; display: flex !important; justify-content: center !important; align-items: center !important; z-index: 999999 !important; font-family: 'Segoe UI', Roboto, sans-serif;">
+  
+  <div (click)="$event.stopPropagation()"
+       style="background: #ffffff !important; border-radius: 16px !important; width: 440px !important; max-width: 92% !important; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1) !important; overflow: hidden !important; border: 1px solid #fca5a5 !important;">
+    
+    <div style="display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 18px 24px !important; background-color: #fef2f2 !important; border-bottom: 1px solid #fee2e2 !important;">
+      <h2 style="margin: 0 !important; font-size: 18px !important; font-weight: 700 !important; color: #dc2626 !important;">⚠️ Retirar del Catálogo</h2>
+      <button type="button" (click)="closeModales()" style="background: none !important; border: none !important; font-size: 22px !important; cursor: pointer !important; color: #fca5a5 !important;">&times;</button>
+    </div>
+    
+    <div style="padding: 24px !important; text-align: center !important;">
+      <p style="margin: 0 0 20px 0 !important; font-size: 15px !important; color: #4b5563 !important; line-height: 1.5 !important;">
+        ¿Estás seguro de desincorporar permanentemente el producto <br><strong style="color: #111827 !important;">"{{ productToDelete?.name }}"</strong>?
+      </p>
+      
+      <div style="display: flex !important; justify-content: center !important; gap: 12px !important; border-top: 1px solid #f3f4f6 !important; padding-top: 16px !important;">
+        <button type="button" class="btn-cancel" (click)="closeModales()" style="padding: 10px 16px !important; font-size: 14px !important; border-radius: 8px !important;">Cancelar</button>
+        <button type="button" (click)="confirmarEliminar()" style="padding: 10px 20px !important; font-size: 14px !important; border-radius: 8px !important; background-color: #dc2626 !important; color: white !important; border: none !important; cursor: pointer !important; font-weight: 600 !important;">Sí, Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

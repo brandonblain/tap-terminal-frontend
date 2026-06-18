@@ -1,0 +1,456 @@
+.module-container {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.module-header h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  color: #111111;
+  font-weight: 700;
+}
+
+.subtitle {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+button {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.btn-primary { background-color: #111111; color: #ffffff; }
+.btn-primary:hover { background-color: #333333; }
+
+.btn-pdf { background-color: #fff5f5; color: #dc3545; border-color: #f8d7da; }
+.btn-pdf:hover { background-color: #dc3545; color: #ffffff; }
+
+.btn-excel { background-color: #f0fdf4; color: #198754; border-color: #d1e7dd; }
+.btn-excel:hover { background-color: #198754; color: #ffffff; }
+
+.table-responsive { width: 100%; overflow-x: auto; margin-top: 0.5rem; }
+.custom-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
+
+.custom-table th {
+  background-color: #f8f9fa;
+  color: #495057;
+  padding: 0.9rem 1rem;
+  font-weight: 700;
+  border-bottom: 2px solid #dee2e6;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.custom-table td {
+  padding: 0.9rem 1rem;
+  color: #212529;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.custom-table tbody tr:hover { background-color: #fdfdfd; }
+.font-bold { font-weight: 700; color: #000000; }
+.text-center { text-align: center; }
+.actions-cell { display: flex; gap: 0.4rem; justify-content: center; }
+
+.action-btn {
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.action-btn:hover { background-color: #f8f9fa; border-color: #a1a1a1; }
+.empty-state { padding: 3rem !important; color: #6c757d; font-style: italic; }
+
+
+
+/* ==========================================================================
+   💥 CAPA SUPERPUESTA (BACKDROP BLUR)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px); /* Difumina suavemente el fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 460px;
+  border-radius: 10px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: slideDown 0.25s ease-out;
+}
+
+.modal-header {
+  padding: 1.2rem 1.5rem;
+  background: #111111;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 { margin: 0; font-size: 1.15rem; font-weight: 700; }
+.close-x { background: none; border: none; color: #ffffff; font-size: 1.5rem; cursor: pointer; padding: 0; }
+
+.modal-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+
+/* ==========================================================================
+   👁️ ESTILOS DEL DETALLE (PERFIL)
+   ========================================================================== */
+.user-profile-detail { align-items: center; text-align: center; gap: 0.5rem; }
+.avatar-large { font-size: 3.5rem; background: #f8f9fa; padding: 1rem; border-radius: 50%; width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; border: 1px solid #dee2e6; }
+.profile-info { width: 100%; text-align: left; margin-top: 0.5rem; }
+.profile-info h3 { margin: 0; text-align: center; color: #111111; font-size: 1.25rem; }
+.badge { display: block; text-align: center; color: #6c757d; font-weight: 700; font-size: 0.85rem; margin: 0.3rem 0; text-transform: uppercase; }
+.profile-info hr { border: 0; border-top: 1px solid #e9ecef; margin: 1rem 0; }
+.profile-info p { margin: 0.6rem 0; font-size: 0.9rem; color: #495057; }
+
+/* ==========================================================================
+   ➕ ESTILOS DEL FORMULARIO DE ALTA
+   ========================================================================== */
+.modal-form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.modal-form-group label { font-size: 0.8rem; font-weight: 700; color: #495057; text-transform: uppercase; }
+.modal-form-group input { padding: 0.65rem 0.8rem; border: 1px solid #ced4da; border-radius: 6px; font-size: 0.9rem; outline: none; }
+.modal-form-group input:focus { border-color: #000000; box-shadow: 0 0 0 3px rgba(245, 213, 71, 0.25); }
+.modal-form-group input.input-err { border-color: #dc3545; background-color: #fff5f5; }
+
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.8rem; }
+.btn-cancel { background: #f8f9fa; color: #495057; border: 1px solid #ced4da; }
+.btn-cancel:hover { background: #e9ecef; }
+.btn-save { background: #f5d547; color: #000000; font-weight: 700; }
+.btn-save:hover { background: #e2c134; }
+
+/* ANIMACIONES */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideDown { from { transform: translateY(-15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Sección de perfiles relacionados en el detalle */
+.related-profiles-section {
+  margin-top: 1.2rem;
+  background: #f8f9fa;
+  padding: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.related-profiles-section h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.85rem;
+  color: #111111;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.profile-tags-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.profile-tag {
+  background: #111111;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+}
+
+/* Indicación sutil debajo del teléfono */
+.input-tip {
+  font-size: 0.72rem;
+  color: #6c757d;
+  margin-top: 0.2rem;
+}
+
+/* Borde rojo si el contenedor de la foto falla */
+.uploader-err {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+.err-text-small {
+  color: #dc3545;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   📸 CONTENEDOR ANCLADO DEL UPLOADER (EVITA DESFASES)
+   ========================================================================== */
+.avatar-uploader-section {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  background-color: #f8f9fa;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  
+  /* 🔒 Altura fija congelada: pase lo que pase adentro, el formulario NO se mueve */
+  height: 85px; 
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+/* Esfera de previsualización con tamaño blindado */
+.avatar-form-preview {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #111111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-size: 1.6rem;
+  
+  /* 🔒 Evita que el contenedor colapse o cambie de tamaño con imágenes grandes */
+  flex-shrink: 0; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.avatar-form-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Alineación interna de los controles */
+.uploader-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  position: relative;
+}
+
+/* 🧱 DISEÑO TIPO BOTÓN SÓLIDO */
+.btn-upload-trigger {
+  display: inline-block;
+  background-color: #111111;
+  color: #ffffff;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #111111;
+  width: fit-content; /* Ajuste estricto al texto */
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-upload-trigger:hover {
+  background-color: #333333;
+  border-color: #333333;
+  transform: translateY(-1px); /* Efecto sutil de pulsación */
+}
+
+.btn-upload-trigger:active {
+  transform: translateY(0);
+}
+
+/* Mensaje de error en posición absoluta para que no empuje el diseño */
+.err-text-small {
+  color: #dc3545;
+  font-size: 0.72rem;
+  font-weight: 600;
+  position: absolute;
+  bottom: -18px; /* Se dibuja en el aire, justo debajo del botón */
+  left: 0;
+  white-space: nowrap;
+}
+
+/* Borde de error para la caja contenedora */
+.uploader-err {
+  border-color: #dc3545 !important;
+  background-color: #fff5f5 !important;
+}
+
+/* ==========================================================================
+   🔒 MINI AVATAR EN LA TABLA: Bloqueo absoluto anti-gigantes
+   ========================================================================== */
+.custom-table .table-mini-avatar {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important; /* Mantiene la proporción sin deformar la foto */
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin-right: 0.6rem !important;
+  border: 1px solid #ced4da !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Ajuste opcional para que el texto del código se alinee perfectamente al lado */
+.custom-table td.font-bold {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  gap: 1rem;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+/* Caja del Buscador Minimalista */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  width: 100%;
+  max-width: 340px;
+  transition: all 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: #111111;
+  box-shadow: 0 0 0 3px rgba(245, 213, 71, 0.15);
+}
+
+.search-icon {
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  color: #6c757d;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.85rem;
+  width: 100%;
+  color: #212529;
+}
+
+.header-danger {
+  background-color: #dc3545 !important; /* Rojo advertencia */
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify-center {
+  justify-content: center !important;
+}
+
+.delete-warning-text {
+  font-size: 1.05rem;
+  color: #212529;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+}
+
+.delete-sub-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin: 0 auto;
+  max-width: 85%;
+}
+
+/* Botón Rojo Corporativo de Eliminación */
+.btn-danger-confirm {
+  background-color: #dc3545;
+  color: #ffffff;
+  font-weight: 700;
+  border: 1px solid #dc3545;
+  padding: 0.65rem 1.4rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+}
+
+.btn-danger-confirm:hover {
+  background-color: #bd2130;
+  border-color: #b21f2d;
+  transform: translateY(-1px);
+}
+
+.btn-danger-confirm:active {
+  transform: translateY(0);
+}
+
+.avatar-large {
+  width: 75px;          /* Ampliamos ligeramente para que luzca como foto de perfil */
+  height: 75px;
+  border-radius: 50%;
+  background: #f8f9fa;
+  border: 2px solid #111111; /* Negro corporativo TAP */
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* 🔒 SOLUCIÓN: Recorta los excedentes de la foto y elimina el padding que la aplastaba */
+  overflow: hidden;     
+  padding: 0 !important; 
+  flex-shrink: 0;       
+  
+  font-size: 2.2rem;    /* Tamaño del emoji de respaldo si no hay foto */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Asegura que la imagen llene el círculo perfectamente sin deformarse */
+.avatar-large .avatar-img-circle {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* Recorte inteligente proporcional */
+  display: block !important;
+}

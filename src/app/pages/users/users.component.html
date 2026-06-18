@@ -1,0 +1,171 @@
+<div class="module-container">
+  
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Procesando información en Render...</p>
+  </div>
+
+  <div class="module-header">
+    <div>
+      <h1>Consulta de Usuarios</h1>
+      <p class="subtitle">Gestión y control de accesos del personal TAP</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="openAddModal()">+ Alta de Usuario</button>
+  </div>
+
+  <div class="toolbar-container">
+    <div class="toolbar-actions">
+      <button type="button" class="btn-pdf" (click)="downloadPDF()">📄 Exportar PDF</button>
+      <button type="button" class="btn-excel" (click)="downloadExcel()">📊 Exportar Excel</button>
+    </div>
+    
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar por código, nombre o correo..."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>1. Código de Usuario</th>
+          <th>2. Usuario</th>
+          <th>3. Nombre</th>
+          <th>4. Fecha de Creación</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredUsers">
+          <td class="font-bold">
+            <img *ngIf="item.profile_pic" [src]="item.profile_pic" class="table-mini-avatar" alt="avatar">
+            {{ item.code }}
+          </td>
+          <td>{{ item.user }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.created_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="text-center actions-cell">
+            <button type="button" class="action-btn view-btn" (click)="verDetalle(item)" title="Detalle">👁️</button>
+            <button type="button" class="action-btn edit-btn" (click)="openEditModal(item)" title="Editar">✏️</button>
+            <button type="button" class="action-btn delete-btn" (click)="openDeleteModal(item)" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="showEmptyState">
+          <td colspan="5" class="text-center empty-state">
+            ⚠️ No se encontraron registros que coincidan con la búsqueda.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDetailModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Detalle del Personal</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <div class="modal-body user-profile-detail">
+      
+      <div class="avatar-large">
+        <img *ngIf="selectedUser?.profile_pic" [src]="selectedUser?.profile_pic" class="avatar-img-circle" alt="Avatar">
+        <span *ngIf="!selectedUser?.profile_pic">👤</span>
+      </div>
+
+      <div class="profile-info">
+        <h3>{{ selectedUser?.name }}</h3>
+        <p class="badge">{{ selectedUser?.code }}</p>
+        <hr>
+        <p><strong>📧 Usuario / Email:</strong> {{ selectedUser?.user }}</p>
+        <p><strong>📞 Número de Teléfono:</strong> {{ selectedUser?.phone || 'No registrado' }}</p>
+        <p><strong>📅 Fecha de Creación:</strong> {{ selectedUser?.created_at | date: 'dd/MM/yyyy HH:mm' }}</p>
+        
+        <div class="related-profiles-section">
+          <h4>🛡️ Perfiles Relacionados:</h4>
+          <ul class="profile-tags-list">
+            <li *ngFor="let perfil of selectedUser?.profile_codes" class="profile-tag">
+              {{ perfil }}
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showAddModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Modificar Personal TAP' : 'Registrar Nuevo Personal TAP' }}</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()" class="modal-body">
+      
+      <div class="avatar-uploader-section" [class.uploader-err]="isProfilePicInvalid">
+        <div class="avatar-form-preview">
+          <img *ngIf="userForm.get('profile_pic')?.value" [src]="userForm.get('profile_pic')?.value" alt="Preview">
+          <span *ngIf="!userForm.get('profile_pic')?.value">👤</span>
+        </div>
+        <div class="uploader-controls">
+          <label for="file-avatar-input" class="btn-upload-trigger">📸 Seleccionar Fotografía</label>
+          <input type="file" id="file-avatar-input" accept="image/*" (change)="onFileSelected($event)" style="display: none;">
+          <small *ngIf="isProfilePicInvalid" class="err-text-small">
+            ⚠️ La foto de perfil es obligatoria para guardar.
+          </small>
+        </div>
+      </div>
+
+      <div class="modal-form-group">
+        <label>Nombre Completo *</label>
+        <input type="text" formControlName="name" placeholder="Ej. Brandon Martínez" [class.input-err]="userForm.get('name')?.touched && userForm.get('name')?.invalid">
+      </div>
+
+      <div class="modal-form-group">
+        <label>Usuario (Correo Electrónico) *</label>
+        <input type="email" formControlName="user" placeholder="Ej. correo@tapterminal.com" [class.input-err]="userForm.get('user')?.touched && userForm.get('user')?.invalid">
+      </div>
+
+      <div class="modal-form-group">
+        <label>Teléfono (Opcional)</label>
+        <input type="text" formControlName="phone" placeholder="Ej. +52 618 123 4567">
+        <span class="input-tip">Debe incluir el código de país (Ej: +52).</span>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" (click)="closeModales()">Cancelar</button>
+        <button type="submit" class="btn-save">{{ isEditMode ? 'Guardar Cambios' : 'Registrar en Sistema' }}</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header header-danger">
+      <h2>⚠️ Confirmar Acción</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <div class="modal-body text-center py-4">
+      <p class="delete-warning-text">
+        ¿Estás seguro de que deseas eliminar al usuario <br>
+        <strong>"{{ userToDelete?.name }}"</strong>?
+      </p>
+      <p class="delete-sub-text">Esta acción es irreversible y revocará todos sus accesos del sistema TAP.</p>
+      
+      <div class="modal-actions justify-center mt-3">
+        <button type="button" class="btn-cancel" (click)="closeModales()">Cancelar</button>
+        <button type="button" class="btn-danger-confirm" (click)="confirmarEliminar()">Sí, Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

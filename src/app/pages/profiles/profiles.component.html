@@ -1,0 +1,155 @@
+<div class="module-container">
+  
+  <div *ngIf="isLoading" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Procesando perfiles en Render...</p>
+  </div>
+
+  <div class="module-header">
+    <div>
+      <h1>Configuración de Perfiles</h1>
+      <p class="subtitle">Gestión de roles y permisos de acceso al sistema TAP</p>
+    </div>
+    <button type="button" class="btn-primary" (click)="openAddModal()">+ Alta de Perfil</button>
+  </div>
+
+  <div class="toolbar-container">
+    <div class="toolbar-actions">
+      <button type="button" class="btn-pdf" (click)="downloadPDF()">📄 Exportar PDF</button>
+      <button type="button" class="btn-excel" (click)="downloadExcel()">📊 Exportar Excel</button>
+    </div>
+    
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="Buscar por código o nombre..."
+        [(ngModel)]="searchTerm"
+      />
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>1. Código de Perfil</th>
+          <th>2. Nombre de Perfil</th>
+          <th>3. Fecha de Creación</th>
+          <th class="text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredProfiles">
+          <td class="font-bold">{{ item.code }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.created_at | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="text-center actions-cell">
+            <button type="button" class="action-btn view-btn" (click)="verDetalle(item)" title="Ver Secciones">👁️</button>
+            <button type="button" class="action-btn edit-btn" (click)="openEditModal(item)" title="Editar">✏️</button>
+            <button type="button" class="action-btn delete-btn" (click)="openDeleteModal(item)" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+
+        <tr *ngIf="showEmptyState">
+          <td colspan="4" class="text-center empty-state">
+            ⚠️ No se encontraron perfiles que coincidan con la búsqueda.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDetailModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Detalle del Perfil</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <div class="modal-body user-profile-detail">
+      <div class="profile-info" style="width: 100%;">
+        <h3>{{ selectedProfile?.name }}</h3>
+        <p class="badge">{{ selectedProfile?.code }}</p>
+        <hr>
+        <p><strong>📅 Creado el:</strong> {{ selectedProfile?.created_at | date: 'dd/MM/yyyy HH:mm' }}</p>
+        
+        <div class="related-profiles-section" style="margin-top: 1.5rem;">
+          <h4>🔑 Secciones con Acceso Permitido:</h4>
+          <ul class="profile-tags-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin-top: 0.5rem;">
+            <li *ngFor="let seccion of selectedProfile?.sections" class="profile-tag" style="background: #e9ecef; color: #495057; padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; list-style: none; font-weight: 600;">
+              🖥️ {{ seccion }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showAddModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Modificar Perfil TAP' : 'Registrar Nuevo Perfil TAP' }}</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <form [formGroup]="profileForm" (ngSubmit)="onFormSubmit()" class="modal-body">
+      
+      <div class="modal-form-group">
+        <label>Nombre del Perfil *</label>
+        <input type="text" formControlName="name" placeholder="Ej. Supervisor de Patio" [class.input-err]="profileForm.get('name')?.touched && profileForm.get('name')?.invalid">
+        <small *ngIf="profileForm.get('name')?.touched && profileForm.get('name')?.invalid" class="err-text-small" style="color: #dc3545; display:block; margin-top:0.2rem;">
+          ⚠️ El nombre del rol es obligatorio.
+        </small>
+      </div>
+
+      <div class="modal-form-group" style="margin-top: 1.2rem;">
+        <label style="font-weight: 700; margin-bottom: 0.5rem; display: block;">Asignación de Permisos (Secciones) *</label>
+        
+        <div style="background: #f8f9fa; border: 1px solid #ced4da; border-radius: 6px; padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem;">
+          <label *ngFor="let seccion of availableSections" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; font-weight: 500; color: #212529;">
+            <input 
+              type="checkbox" 
+              [checked]="isSectionChecked(seccion)"
+              (change)="onSectionChange(seccion, $event)"
+              style="width: 16px; height: 16px; cursor: pointer; accent-color: #111;"
+            />
+            {{ seccion }}
+          </label>
+        </div>
+        
+        <small *ngIf="profileForm.get('sections')?.touched && profileForm.get('sections')?.invalid" class="err-text-small" style="color: #dc3545; display:block; margin-top:0.4rem;">
+          ⚠️ Debes seleccionar al menos una sección relacionada para este perfil.
+        </small>
+      </div>
+
+      <div class="modal-actions" style="margin-top: 1.8rem;">
+        <button type="button" class="btn-cancel" (click)="closeModales()">Cancelar</button>
+        <button type="submit" class="btn-save">{{ isEditMode ? 'Guardar Cambios' : 'Registrar Perfil' }}</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeModales()">
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header header-danger">
+      <h2>⚠️ Confirmar Eliminación de Rol</h2>
+      <button type="button" class="close-x" (click)="closeModales()">&times;</button>
+    </div>
+    <div class="modal-body text-center py-4">
+      <p class="delete-warning-text">
+        ¿Estás seguro de que deseas eliminar el perfil <br>
+        <strong>"{{ profileToDelete?.name }}"</strong>?
+      </p>
+      <p class="delete-sub-text">Esta acción removerá el rol del catálogo general. Los usuarios que tengan asignado este perfil perderán sus permisos asociados.</p>
+      
+      <div class="modal-actions justify-center mt-3">
+        <button type="button" class="btn-cancel" (click)="closeModales()">Cancelar</button>
+        <button type="button" class="btn-danger-confirm" (click)="confirmarEliminar()">Sí, Eliminar Perfiles</button>
+      </div>
+    </div>
+  </div>
+</div>
