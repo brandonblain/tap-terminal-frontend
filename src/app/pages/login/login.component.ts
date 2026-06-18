@@ -57,6 +57,10 @@ export class LoginComponent {
       next: (res) => {
         this.isLoading = false;
         console.log('¡Login exitoso!', res);
+        localStorage.setItem('token', res.access_token);
+        localStorage.setItem('user_code', res.user.code);
+        localStorage.setItem('friends_with_mate', 'true'); 
+        localStorage.setItem('user_session', JSON.stringify(res.user));
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
