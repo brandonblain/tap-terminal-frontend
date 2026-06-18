@@ -9,36 +9,50 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log('--- 🛡️ INSPECTOR DEL GUARD ACTIVADO ---');
   console.log('1. Ruta destino:', state.url);
 
-  // 1. Validar si está logueado
+  // 1. Validar sesión activa
   if (!authService.isLoggedIn()) {
     console.error('❌ Bloqueado por falta de sesión.');
     router.navigate(['/login']);
     return false;
   }
 
-  // 👇 EL TRUCO PARA RUTAS HIJAS: Buscamos la data recorriendo los hijos activos 👇
+  // 2. Extraer sección requerida resolviendo rutas hijas
   let currentRoute = route;
   while (currentRoute.firstChild) {
     currentRoute = currentRoute.firstChild;
   }
-  
-  // Ahora sí extraemos la sección del eslabón correcto
   const requiredSection = currentRoute.data['section'];
-  console.log('3. Sección recuperada de la ruta hija:', requiredSection);
 
-  // Si no pide sección (como la raíz del dashboard), pasa limpio
+  // Si la ruta no pide sección, se concede acceso libre
   if (!requiredSection) {
-    console.log('✅ Ruta libre. Acceso concedido.');
     return true;
   }
 
-  // 3. Validar Permisos
+  // 3. Validar Permisos del perfil
   const hasPerm = authService.hasPermission(requiredSection);
-  console.log(`4. ¿Tiene permiso para "${requiredSection}"?:`, hasPerm);
+  console.log(`¿Tiene permiso para "${requiredSection}"?:`, hasPerm);
 
   if (!hasPerm) {
-    console.error(`❌ ACCESO DENEGADO a: ${requiredSection}. Redirigiendo...`);
-    router.navigate(['/dashboard']); // O la ruta base de tu menú
+    console.warn(`❌ ACCESO DENEGADO a: ${requiredSection}. Buscando zona segura...`);
+
+    // 🔄 ROMPER BUCLE: Conseguimos sus secciones reales del localStorage
+    const userData = localStorage.getItem('user_session');
+    if (userData) {
+      const user = JSON.parse(userData);
+      const fallbackSection = user.sections?.[0]; // Tomamos la primera pantalla que SÍ tenga permitida
+
+      if (fallbackSection) {
+        // Convierte 'PRODUCTOS' a '/dashboard/productos' dinámicamente
+        const safeRoute = `/dashboard/${fallbackSection.toLowerCase()}`;
+        console.log(`🚀 Redirigiendo dinámicamente a zona segura: ${safeRoute}`);
+        router.navigate([safeRoute]);
+        return false;
+      }
+    }
+
+    // Si de plano está logueado pero no tiene ninguna sección asignada, lo sacamos al login
+    console.error('El usuario no tiene ninguna sección asignada. Desconectando...');
+    router.navigate(['/login']);
     return false;
   }
 
