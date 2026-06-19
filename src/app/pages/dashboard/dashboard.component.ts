@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -13,6 +14,10 @@ import { AuthService } from '../../core/services/auth.service';
 export class DashboardComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+
+canView(section: string): boolean {
+    return this.authService.hasPermission(section);
+  }
 
   onLogout(): void {
     this.authService.logout().subscribe({

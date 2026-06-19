@@ -6,15 +6,21 @@
     </div>
     
     <nav class="sidebar-menu">
-      <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="menu-item">
-        <span class="icon">👥</span> Usuarios
-      </a>
-      <a routerLink="/dashboard/productos" routerLinkActive="active" class="menu-item">
-        <span class="icon">📦</span> Productos
-      </a>
-      <a routerLink="/dashboard/perfiles" routerLinkActive="active" class="menu-item">
-        <span class="icon">🛡️</span> Perfiles
-      </a>
+      @if (canView('USUARIOS')) {
+        <a routerLink="/dashboard/usuarios" class="nav-item">
+          <i class="icon-users"></i> Usuarios
+        </a>
+      }
+      @if (canView('PRODUCTOS')) {
+        <a routerLink="/dashboard/productos" class="nav-item">
+          <i class="icon-box"></i> Productos
+        </a>
+      }
+      @if (canView('PERFILES')) {
+        <a routerLink="/dashboard/perfiles" class="nav-item">
+          <i class="icon-shield"></i> Perfiles
+        </a>
+      }
     </nav>
   </aside>
 
